@@ -13,7 +13,7 @@ class PaginationTest < Test::Unit::TestCase
       end
 
       @document.collection.clear
-      
+
       @doc1 = @document.create({:first_name => 'John', :last_name => 'Nunemaker', :age => '27'})
       @doc2 = @document.create({:first_name => 'Steve', :last_name => 'Smith', :age => '28'})
       @doc3 = @document.create({:first_name => 'Steph', :last_name => 'Nunemaker', :age => '26'})
@@ -39,24 +39,24 @@ class PaginationTest < Test::Unit::TestCase
       result = @document.paginate({
         :conditions => {:last_name => 'Nunemaker'},
         :order      => "age DESC",
-        :per_page   => 2, 
+        :per_page   => 2,
         :page       => 1,
       })
       result.should == [@doc1, @doc3]
       result.first.age.should == 27
     end
-    
+
     should "withstand rigor" do
       result = @document.paginate({
-        :per_page   => 1, 
+        :per_page   => 1,
         :page       => 1,
-        :order      => 'age desc', 
+        :order      => 'age desc',
         :conditions => {:last_name => 'Nunemaker'}
       })
       result.should == [@doc1]
       result.total_entries.should == 2
       result.total_pages.should == 2
-      
+
       result = @document.paginate({
         :per_page   => 1,
         :page       => 2,
@@ -66,10 +66,10 @@ class PaginationTest < Test::Unit::TestCase
       result.should == [@doc3]
       result.total_entries.should == 2
       result.total_pages.should == 2
-      
+
       result = @document.paginate({
-        :per_page   => 2, 
-        :page       => 1, 
+        :per_page   => 2,
+        :page       => 1,
         :order      => 'age desc',
         :conditions => {:last_name => 'Nunemaker'}
       })
