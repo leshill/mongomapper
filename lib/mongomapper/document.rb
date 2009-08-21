@@ -11,6 +11,10 @@ module MongoMapper
         include SaveWithValidation
         include RailsCompatibility::Document
         extend ClassMethods
+
+        class << model
+          define_method(:per_page) { 25 } unless respond_to?(:per_page)
+        end
       end
 
       descendants << model
@@ -33,7 +37,7 @@ module MongoMapper
       end
 
       def paginate(options)
-        per_page      = options.delete(:per_page)
+        per_page      = options.delete(:per_page) ||  self.per_page
         page          = options.delete(:page)
         total_entries = count(options[:conditions] || {})
         collection    = Pagination::PaginationProxy.new(total_entries, page, per_page)

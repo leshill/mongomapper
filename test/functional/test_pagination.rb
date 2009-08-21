@@ -10,6 +10,8 @@ class PaginationTest < Test::Unit::TestCase
         key :first_name, String
         key :last_name, String
         key :age, Integer
+
+        def self.per_page; 1; end
       end
 
       @document.collection.clear
@@ -22,6 +24,11 @@ class PaginationTest < Test::Unit::TestCase
     should "return the total pages" do
       result = @document.paginate(:per_page => 2, :page => 1)
       result.total_pages.should == 2
+    end
+
+    should "return the total pages when defaulting to the document class per_page" do
+      result = @document.paginate(:page => 1)
+      result.total_pages.should == 3
     end
 
     should "return the total of records" do
